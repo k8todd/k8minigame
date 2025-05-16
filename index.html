@@ -1,92 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>PlayK8 - Telegram Mini App</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>K8 Minigame</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="preconnect" href="https://k8play7.com/">
-  <link rel="dns-prefetch" href="https://k8play7.com/">
+  <link rel="preconnect" href="https://ooopenlab.cc/">
+  <link rel="dns-prefetch" href="https://ooopenlab.cc/">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body, html { height: 100%; width: 100%; background-color: #121212; }
-    .container { display: flex; flex-direction: column; min-height: 100%; width: 100%; }
-    .loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #121212;
-      z-index: 1000;
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #000;
+      overflow: hidden;
     }
-    .spinner {
-      width: 50px; height: 50px;
-      border: 5px solid rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      border-top-color: #E6601B;
-      animation: spin 1s ease-in-out infinite;
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    iframe { flex: 1; width: 100%; height: 100%; border: none; }
   </style>
 </head>
 <body>
-  <div class="loading" id="loading">
-    <div class="spinner"></div>
-  </div>
-  <div class="container">
-    <iframe id="gameFrame" src="about:blank" allowfullscreen></iframe>
-  </div>
-
+  <iframe src="https://ooopenlab.cc/preview/BdeKjCAAukjDFn9skPEt" allow="fullscreen; autoplay; clipboard-write;"></iframe>
   <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-    const param = tg.initDataUnsafe?.start_param;
-
-    const userLang = tg.initDataUnsafe?.user?.language_code || 'en';
-    const translations = {
-      en: { exitConfirm: 'Are you sure you want to exit the game?' },
-      ja: { exitConfirm: 'ゲームを終了してもよろしいですか？' },
-      zh: { exitConfirm: '确定要退出游戏吗？' }
-    };
-    const t = translations[userLang] || translations.en;
-
-    const gameFrame = document.getElementById('gameFrame');
-    const loadingElement = document.getElementById('loading');
-
-    const baseGameUrl = 'https://k8play7.com/';
-    const gameUrl = param ? `${baseGameUrl}?invite=${encodeURIComponent(param)}` : baseGameUrl;
-
-    function loadGame() {
-      loadingElement.style.display = 'flex';
-      gameFrame.src = gameUrl;
-      gameFrame.onload = () => {
-        loadingElement.style.display = 'none';
-        tg.ready();
-      };
+    // 初始化 Telegram WebApp 环境
+    if (window.Telegram.WebApp) {
+      Telegram.WebApp.expand();
+      Telegram.WebApp.ready();
     }
-
-    function resizeIframe() {
-      gameFrame.style.height = window.innerHeight + 'px';
-    }
-
-    resizeIframe();
-    window.addEventListener('resize', resizeIframe);
-
-    tg.BackButton.onClick(() => {
-      if (gameFrame.src.includes(baseGameUrl)) {
-        tg.showConfirm(t.exitConfirm, (confirmed) => {
-          if (confirmed) {
-            gameFrame.src = 'about:blank';
-            loadGame();
-          }
-        });
-      }
-    });
-
-    tg.onEvent('viewportChanged', resizeIframe);
-    window.addEventListener('load', loadGame);
   </script>
 </body>
 </html>
